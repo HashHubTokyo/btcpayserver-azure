@@ -1,0 +1,282 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/0.1.2-preview/CreateUIDefinition.MultiVm.json#",
+    "handler": "Microsoft.Compute.MultiVm",
+    "version": "0.1.2-preview",
+    "parameters": {
+        "basics": [
+            {
+                "name": "sshKey",
+                "type": "Microsoft.Compute.CredentialsCombo",
+                "label": {
+                    "authenticationType": "Authentication type",
+                    "password": "Password",
+                    "confirmPassword": "Confirm password",
+                    "sshPublicKey": "SSH public key"
+                },
+                "toolTip": {
+                    "authenticationType": "",
+                    "password": "",
+                    "sshPublicKey": "SSH Public key to login to the Docker host."
+                },
+                "constraints": {
+                    "required": true
+                },
+                "options": {
+                    "hideConfirmation": true,
+                    "hidePassword": true
+                },
+                "osPlatform": "Linux",
+                "visible": true
+            },
+            {
+                "name": "notificationEmail",
+                "type": "Microsoft.Common.TextBox",
+                "label": "Email",
+                "defaultValue": "",
+                "toolTip": "Email used by Let's encrypt to notify you about certificate expiration (optional)",
+                "constraints": {
+                    "required": false,
+                    "regex": "^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$",
+                    "validationMessage": "Invalid email format."
+                },
+                "visible": true
+            }
+        ],
+        "steps": [
+            {
+                "name": "instanceConfig",
+                "label": "VM Instance settings",
+                "subLabel": {
+                    "preValidation": "Configure VM Instance settings",
+                    "postValidation": "Done"
+                },
+                "bladeTitle": "VM instance settings",
+                "elements": [
+                    {
+                        "name": "vmSize",
+                        "type": "Microsoft.Compute.SizeSelector",
+                        "label": "Size",
+                        "toolTip": "VM size for the Docker host. (see https://azureprice.net/)",
+                        "recommendedSizes": [
+                            "Standard_D2_v2"
+                        ],
+                        "constraints": {
+                            "allowedSizes": [],
+                            "excludedSizes": [],
+                            "numAvailabilityZonesRequired": 1,
+                            "zone": "1"
+                        },
+                        "options": {
+                            "hideDiskTypeFilter": false
+                        },
+                        "osPlatform": "Linux",
+                        "count": 1,
+                        "visible": true
+                    }
+                ]
+            },
+            {
+                "name": "blockchainConfig",
+                "label": "Blockchain settings",
+                "subLabel": {
+                    "preValidation": "Configure the blockchain settings",
+                    "postValidation": "Done"
+                },
+                "bladeTitle": "Blockchain settings",
+                "elements": [
+                    {
+                        "name": "network",
+                        "type": "Microsoft.Common.DropDown",
+                        "label": "Blockchain network",
+                        "defaultValue": "mainnet",
+                        "toolTip": "Network to connect.",
+                        "constraints": {
+                            "allowedValues": [
+                                {
+                                    "label": "mainnet",
+                                    "value": "mainnet"
+                                },
+                                {
+                                    "label": "testnet",
+                                    "value": "testnet"
+                                },
+                                {
+                                    "label": "regtest",
+                                    "value": "regtest"
+                                }
+                            ],
+                            "required": true
+                        },
+                        "visible": true
+                    },
+                    {
+                        "name": "supportedCrypto1",
+                        "type": "Microsoft.Common.DropDown",
+                        "label": "Supported crypto-currency (1st)",
+                        "defaultValue": "btc",
+                        "toolTip": "Choose a crypto currency to support",
+                        "constraints": {
+                            "allowedValues": [
+                                {
+                                    "label": "Bitcoin (BTC)",
+                                    "value": "btc"
+                                },
+                                {
+                                    "label": "Litecoin (LTC)",
+                                    "value": "ltc"
+                                },
+                                {
+                                    "label": "Groestlcoin (GRS)",
+                                    "value": "grs"
+                                },
+                                {
+                                    "label": "Bitcoin GOLD (BTG)",
+                                    "value": "btg"
+                                },
+                                {
+                                    "label": "Feathercoin (FTC)",
+                                    "value": "ftc"
+                                },
+                                {
+                                    "label": "Viacoin (VIA)",
+                                    "value": "via"
+                                }
+                            ],
+                           "required": true
+                        },
+                        "visible": true
+                    },
+                    {
+                        "name": "supportedCrypto2",
+                        "type": "Microsoft.Common.DropDown",
+                        "label": "Supported crypto-currency (2nd / optional)",
+                        "defaultValue": "",
+                        "toolTip": "Choose a crypto currency to support",
+                        "constraints": {
+                            "allowedValues": [
+                                {
+                                    "label": "",
+                                    "value": ""
+                                },
+                                {
+                                    "label": "Bitcoin (BTC)",
+                                    "value": "btc"
+                                },
+                                {
+                                    "label": "Litecoin (LTC)",
+                                    "value": "ltc"
+                                },
+                                {
+                                    "label": "Groestlcoin (GRS)",
+                                    "value": "grs"
+                                },
+                                {
+                                    "label": "Bitcoin GOLD (BTG)",
+                                    "value": "btg"
+                                },
+                                {
+                                    "label": "Feathercoin (FTC)",
+                                    "value": "ftc"
+                                },
+                                {
+                                    "label": "Viacoin (VIA)",
+                                    "value": "via"
+                                }
+                            ],
+                           "required": false
+                        },
+                        "visible": true
+                    },
+                    {
+                        "name": "lightningNetworkImplementation",
+                        "type": "Microsoft.Common.DropDown",
+                        "label": "Supported lightning network",
+                        "defaultValue": "",
+                        "toolTip": "Choose a lightning network implementation",
+                        "constraints": {
+                            "allowedValues": [
+                                {
+                                    "label": "",
+                                    "value": ""
+                                },
+                                {
+                                    "label": "C-Lightning",
+                                    "value": "cligitning"
+                                },
+                                {
+                                    "label": "LND",
+                                    "value": "lnd"
+                                }
+                            ],
+                           "required": true
+                        },
+                        "visible": true
+                    },
+                    {
+                        "name": "lightningNodeAlias",
+                        "type": "Microsoft.Common.TextBox",
+                        "label": "Alias for Lightning Node (Optional)",
+                        "defaultValue": "",
+                        "toolTip": "Public alias of your lightning node",
+                        "constraints": {
+                            "required": false,
+                            "regex": "^[a-z0-9A-Z]*$",
+                            "validationMessage": "Only alphanumeric characters are allowed."
+                        },
+                        "visible": true
+                    }
+                ]
+            },
+            {
+                "name": "containerConfig",
+                "label": "Container settings",
+                "subLabel": {
+                    "preValidation": "Configure the container settings",
+                    "postValidation": "Done"
+                },
+                "bladeTitle": "Container image settings",
+                "elements": [
+                    {
+                        "name": "ubuntuOSVersion",
+                        "type": "Microsoft.Common.DropDown",
+                        "label": "Ubuntu OS version",
+                        "defaultValue": "16.04.0-LTS",
+                        "toolTip": "Version of base OS.",
+                        "constraints": {
+                            "allowedValues": [
+                                {
+                                    "label": "14.04.4-LTS",
+                                    "value": "14.04.4-LTS"
+                                },
+                                {
+                                    "label": "16.04.0-LTS",
+                                    "value": "16.04.0-LTS"
+                                },
+                                {
+                                    "label": "18.04-LTS",
+                                    "value": "18.04-LTS"
+                                }
+                            ],
+                            "required": true
+                        },
+                        "visible": true
+                    }
+                ]
+            }
+        ],
+        "outputs": {
+            "location": "[location()]",
+            "sshKey": "[basics('sshKey')]",
+            "notificationEmail": "[basics('notificationEmail')]",
+            "vmSize": "[steps('instanceConfig').vmSize]",
+            "network": "[steps('blockchainConfig').network]",
+            "supportedCrypto1": "[steps('blockchainConfig').supportedCrypto1]",
+            "supportedCrypto2": "[steps('blockchainConfig').supportedCrypto2]",
+            "lightningNetworkImplementation": "[steps('blockchainConfig').lightningNetworkImplementation]",
+            "lightningNodeAlias": "[steps('blockchainConfig').lightningNodeAlias]",
+            "ubuntuOSVersion": "[steps('containerConfig').ubuntuOSVersion]",
+            "repository": "https://github.com/btcpayserver/btcpayserver-docker",
+            "branch": "master"
+        }
+    }
+}
