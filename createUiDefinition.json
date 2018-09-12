@@ -266,7 +266,7 @@
         ],
         "outputs": {
             "location": "[location()]",
-            "sshKey": "[basics('sshKey')]",
+            "sshKey": "[basics('sshKey').sshPublicKey]",
             "notificationEmail": "[basics('notificationEmail')]",
             "vmSize": "[steps('instanceConfig').vmSize]",
             "network": "[steps('blockchainConfig').network]",
