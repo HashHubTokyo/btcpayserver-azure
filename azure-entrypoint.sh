@@ -18,6 +18,7 @@ fi
 : "${ACME_CA_URI:=https://acme-staging.api.letsencrypt.org/directory}"
 
 CUSTOM_SSH_KEY="${10}"
+GIT_ACCESS_KEY="${11}"
 BTCPAYGEN_ADDITIONAL_FRAGMENTS="opt-save-storage"
 
 # Setup SSH access via private key
@@ -32,6 +33,11 @@ if [[ "$CUSTOM_SSH_KEY" ]]; then
 fi
 sed -i -e '/^PasswordAuthentication / s/ .*/ no/' /etc/ssh/sshd_config
 userdel -r -f temp
+
+if [[ "$GIT_ACCESS_KEY" ]]; then
+    echo "$GIT_ACCESS_KEY" >> /root/.ssh/id_ed25519
+    chmod 400 /root/.ssh/id_ed25519
+fi
 
 # Configure BTCPAY to have access to SSH
 BTCPAY_HOST_SSHKEYFILE=/root/.ssh/id_rsa_btcpay
