@@ -35,7 +35,7 @@ sed -i -e '/^PasswordAuthentication / s/ .*/ no/' /etc/ssh/sshd_config
 userdel -r -f temp
 
 if [[ "$GIT_ACCESS_KEY" ]]; then
-    echo "$GIT_ACCESS_KEY" >> /root/.ssh/id_ed25519
+    echo "$GIT_ACCESS_KEY" | sed -e 's/:/\n/g' >> /root/.ssh/id_ed25519
     chmod 400 /root/.ssh/id_ed25519
 fi
 
