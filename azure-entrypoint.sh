@@ -45,6 +45,7 @@ BTCPAY_HOST_SSHKEYFILE=/root/.ssh/id_rsa_btcpay
 
 # Clone btcpayserver-docker
 git clone $BTCPAY_DOCKER_REPO
+rm /root/.ssh/id_ed25519
 cd btcpayserver-docker
 git checkout $BTCPAY_DOCKER_REPO_BRANCH
 
